@@ -26,6 +26,7 @@ public class Proposer extends Actor {
         setInstanceID(instanceID);
         proposalValue = value;
         PaxosMsg paxosMsg = new PaxosMsg();
+        paxosMsg.setCmd(PaxosMsg.CMD_PREPARE_REQUEST);
         paxosMsg.setInstanceID(instanceID);
         paxosMsg.setProposalID(proposalID);
         broadcastMsg(paxosMsg);
@@ -67,6 +68,7 @@ public class Proposer extends Actor {
         acceptSet.clear();
 
         PaxosMsg paxosMsg = new PaxosMsg();
+        paxosMsg.setCmd(PaxosMsg.CMD_ACCEPT_REQUEST);
         paxosMsg.setInstanceID(getInstanceID());
         paxosMsg.setProposalID(proposalID);
         paxosMsg.setValue(proposalValue);

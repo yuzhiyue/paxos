@@ -35,6 +35,7 @@ public class Acceptor extends Actor {
         }
 
         PaxosMsg rspPaxosMsg = new PaxosMsg();
+        rspPaxosMsg.setCmd(PaxosMsg.CMD_ACCEPT_RESPONSE);
         rspPaxosMsg.setInstanceID(getInstanceID());
         rspPaxosMsg.setProposalID(paxosMsg.getProposalID());
         if (maxPromisedProposalID > paxosMsg.getProposalID()) {
