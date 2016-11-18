@@ -22,6 +22,10 @@ public class Actor {
         this.instanceID = instanceID;
     }
 
+    public void sendMsg(PaxosMsg msg) {
+
+    }
+
     public void broadcastMsg(PaxosMsg msg) {
 
     }

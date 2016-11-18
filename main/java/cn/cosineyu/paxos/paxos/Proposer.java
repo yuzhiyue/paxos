@@ -9,14 +9,15 @@ import java.util.Set;
 
 enum ProposerStatus {
     PREPARE,
-    ACCEPT
+    ACCEPT,
+    CHOSEN
 }
 
 public class Proposer extends Actor {
     private long proposalID;
     private String proposalValue;
     ProposerStatus status;
-    private Set<String> promised = new HashSet<>();
+    private Set<String> acceptSet = new HashSet<>();
     private long maxOtherAcceptProposalID = 0;
     private String maxOtherAcceptValue = null;
 
@@ -44,14 +45,14 @@ public class Proposer extends Actor {
         if (paxosMsg.isReject()) {
 
         } else {
-            promised.add(paxosMsg.getValue());
+            acceptSet.add(paxosMsg.getValue());
             if (maxOtherAcceptProposalID < paxosMsg.getMaxProposalID()) {
                 maxOtherAcceptProposalID = paxosMsg.getMaxProposalID();
                 maxOtherAcceptValue = paxosMsg.getValue();
             }
         }
 
-        if (promised.size() >= 2) {
+        if (acceptSet.size() >= 2) {
             if (maxOtherAcceptValue != null) {
                 proposalValue = maxOtherAcceptValue;
             }
@@ -63,6 +64,8 @@ public class Proposer extends Actor {
 
     public int accept() {
         status = ProposerStatus.ACCEPT;
+        acceptSet.clear();
+
         PaxosMsg paxosMsg = new PaxosMsg();
         paxosMsg.setInstanceID(getInstanceID());
         paxosMsg.setProposalID(proposalID);
@@ -71,8 +74,34 @@ public class Proposer extends Actor {
         return 0;
     }
 
-    public int onAcceptResponse() {
+    public int onAcceptResponse(PaxosMsg paxosMsg) {
+        if (status != ProposerStatus.ACCEPT) {
+            return 0;
+        }
+        if (paxosMsg.getInstanceID() != getInstanceID()) {
+            return 0;
+        }
+        if (paxosMsg.getProposalID() != proposalID) {
+            return 0;
+        }
+        if (paxosMsg.isReject()) {
+
+        } else {
+            acceptSet.add(paxosMsg.getValue());
+        }
+
+        if (acceptSet.size() >= 2) {
+            onChosen();
+        }
         return 0;
+    }
+
+    private void onChosen() {
+        status = ProposerStatus.CHOSEN;
+        PaxosMsg paxosMsg = new PaxosMsg();
+        paxosMsg.setInstanceID(getInstanceID());
+        paxosMsg.setProposalID(proposalID);
+        broadcastMsg(paxosMsg);
     }
 
     private void newProposalID() {

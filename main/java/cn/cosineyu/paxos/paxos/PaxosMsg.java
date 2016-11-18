@@ -8,7 +8,7 @@ public class PaxosMsg {
     private int sender;
     private long instanceID;
     private long proposalID;
-    private boolean reject;
+    private boolean reject = false;
     private long maxProposalID;
     private String value;
 
