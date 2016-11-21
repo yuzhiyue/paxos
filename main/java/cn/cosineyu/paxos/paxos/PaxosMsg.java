@@ -4,10 +4,10 @@ package cn.cosineyu.paxos.paxos;
  * Created by cosineyu on 2016/11/17.
  */
 public class PaxosMsg {
-    public static int CMD_PREPARE_REQUEST = 1;
-    public static int CMD_PREPARE_RESPONSE = 2;
-    public static int CMD_ACCEPT_REQUEST = 3;
-    public static int CMD_ACCEPT_RESPONSE = 4;
+    public static final int CMD_PREPARE_REQUEST = 1;
+    public static final int CMD_PREPARE_RESPONSE = 2;
+    public static final int CMD_ACCEPT_REQUEST = 3;
+    public static final int CMD_ACCEPT_RESPONSE = 4;
 
     private int cmd;
     private int sender;

@@ -4,23 +4,20 @@ package cn.cosineyu.paxos.paxos;
  * Created by cosineyu on 2016/11/17.
  */
 public class Actor {
-    private String id;
-    private long instanceID;
-    public String getId() {
-        return id;
+    private PaxosInstance instance;
+
+    public PaxosInstance getInstance() {
+        return instance;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setInstance(PaxosInstance instance) {
+        this.instance = instance;
     }
 
     public long getInstanceID() {
-        return instanceID;
+        return instance.getInstanceID();
     }
 
-    public void setInstanceID(long instanceID) {
-        this.instanceID = instanceID;
-    }
 
     public void sendMsg(PaxosMsg msg) {
 

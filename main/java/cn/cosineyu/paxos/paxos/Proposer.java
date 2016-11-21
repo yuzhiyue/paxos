@@ -21,13 +21,12 @@ public class Proposer extends Actor {
     private long maxOtherAcceptProposalID = 0;
     private String maxOtherAcceptValue = null;
 
-    public int prepare(int instanceID, String value) {
+    public int prepare(String value) {
         status = ProposerStatus.PREPARE;
-        setInstanceID(instanceID);
         proposalValue = value;
         PaxosMsg paxosMsg = new PaxosMsg();
         paxosMsg.setCmd(PaxosMsg.CMD_PREPARE_REQUEST);
-        paxosMsg.setInstanceID(instanceID);
+        paxosMsg.setInstanceID(getInstanceID());
         paxosMsg.setProposalID(proposalID);
         broadcastMsg(paxosMsg);
         return 0;
